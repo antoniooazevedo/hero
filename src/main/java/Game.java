@@ -1,4 +1,5 @@
 import com.googlecode.lanterna.TextCharacter;
+import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
@@ -11,9 +12,10 @@ import java.io.IOException;
 
 public class Game {
     Screen screen;
+
     Position pos = new Position(10,10);
     Hero hero = new Hero(pos);
-    Arena arena = new Arena (10, 10, hero);
+    Arena arena = new Arena (100, 100, hero);
 
     Game(){
         try {
@@ -30,7 +32,7 @@ public class Game {
 
     private void draw() throws IOException {
        screen.clear();
-       arena.draw(screen);
+       arena.draw(screen.newTextGraphics());
        screen.refresh();
 
     }
