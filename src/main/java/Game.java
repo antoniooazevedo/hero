@@ -13,6 +13,7 @@ public class Game {
     Screen screen;
     Position pos = new Position(10,10);
     Hero hero = new Hero(pos);
+    Arena arena = new Arena (10, 10, hero);
 
     Game(){
         try {
@@ -29,7 +30,7 @@ public class Game {
 
     private void draw() throws IOException {
        screen.clear();
-       hero.draw(screen);
+       arena.draw(screen);
        screen.refresh();
 
     }
@@ -53,22 +54,6 @@ public class Game {
     }
 
     private void processKey(KeyStroke key){
-       // System.out.println(key);
-       // System.out.println("x and y  " + x + "   " + y);
-        switch (key.getKeyType()){
-            case ArrowUp:
-                moveHero(hero.moveUp());
-                break;
-            case ArrowDown:
-                moveHero(hero.moveDown());
-                break;
-            case ArrowLeft:
-                moveHero(hero.moveLeft());
-                break;
-            case ArrowRight:
-                moveHero(hero.moveRight());
-                break;
-        }
-
+        arena.processKey(key);
     }
 }
