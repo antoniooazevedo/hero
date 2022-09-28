@@ -41,7 +41,7 @@ public class Game {
             draw();
             KeyStroke key = screen.readInput();
             arena.processKey(key);
-            if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q'){
+            if ((key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') || arena.check_for_monster_collisions){
                 screen.close();
             }
             if (key.getKeyType() == KeyType.EOF){

@@ -12,6 +12,10 @@ public class Monster extends Element {
         super(pos);
     }
 
+    public void setPos(Position pos) {
+        this.pos = pos;
+    }
+
     public void draw(TextGraphics graphics) {
         graphics.setCharacter(pos.getX(), pos.getY(), TextCharacter.fromCharacter('M')[0]);
         graphics.setForegroundColor(TextColor.Factory.fromString("#013220"));
@@ -22,7 +26,7 @@ public class Monster extends Element {
     public void move(){
         Random random = new Random();
 
-        switch (random.nextInt(4)){
+        switch (random.nextInt(5)){
             case 0:
                 pos.setX(pos.getX() + 1);
                 break;

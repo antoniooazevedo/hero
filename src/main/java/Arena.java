@@ -19,6 +19,8 @@ public class Arena {
     private List<Coin> coins;
     private List<Monster> monsters;
 
+    public boolean check_for_monster_collisions = false;
+
 
     Arena(int w, int h, Hero hero) {
         width = w;
@@ -47,22 +49,22 @@ public class Arena {
     }
 
 
-    public void draw(TextGraphics graphics){
+    public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
-        for (Coin coin: coins) {
+        for (Coin coin : coins) {
             coin.draw(graphics);
-            if (retrieveCoin(coin)){
+            if (retrieveCoin(coin)) {
                 coins.remove(coin);
                 break;
             }
 
         }
-        for (Monster monster: monsters){
+        for (Monster monster : monsters) {
             monster.draw(graphics);
         }
         hero.draw(graphics);
-        for (Wall wall: walls)
+        for (Wall wall : walls)
             wall.draw(graphics);
     }
 
@@ -83,26 +85,46 @@ public class Arena {
         Random random = new Random();
         ArrayList<Coin> coins = new ArrayList<>();
         for (int i = 0; i < 5; i++)
-            coins.add(new Coin(new Position(random.nextInt(width - 2) + 1,random.nextInt(height - 2) + 1)));
+            coins.add(new Coin(new Position(random.nextInt(width - 2) + 1, random.nextInt(height - 2) + 1)));
 
         return coins;
     }
 
-    private boolean retrieveCoin(Coin coin){
+    private boolean retrieveCoin(Coin coin) {
         return hero.getPos().equals(coin.getPos());
     }
 
-    private List<Monster> createMonsters(){
+    private List<Monster> createMonsters() {
         Random random = new Random();
         ArrayList<Monster> monsters = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++){
-            monsters.add(new Monster(new Position(random.nextInt(width - 2) + 1,random.nextInt(height - 2) + 1)));
+        for (int i = 0; i < 5; i++) {
+            monsters.add(new Monster(new Position(random.nextInt(width - 2) + 1, random.nextInt(height - 2) + 1)));
         }
         return monsters;
     }
 
-    public boolean canHeroMove(Position position){
+    private void moveMonsters() {
+        for (Monster mon : monsters) {
+            Position mon_pos = new Position(mon.getPos().getX(), mon.getPos().getY());
+            mon.move();
+            if (!canMove(mon.getPos())) {
+                mon.setPos(mon_pos);
+            }
+
+        }
+    }
+
+    private boolean verifyMonsterColision(Hero hero){
+        for (Monster mon : monsters){
+            if(hero.getPos().equals(mon.getPos())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean canMove(Position position){
         for (Wall wall : walls){
             if (wall.getPos().equals(position)){
                 return false;
@@ -112,26 +134,32 @@ public class Arena {
     }
 
     public void processKey(KeyStroke key) {
-        Position pos = hero.getPos();
+        Position pos_hero = hero.getPos();
         switch (key.getKeyType()) {
             case ArrowDown:
                 hero.moveHero(hero.moveDown());
-                if (!canHeroMove(hero.getPos())){ hero.setPos(pos);}
+                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                moveMonsters();
                 break;
             case ArrowUp:
                 hero.moveHero(hero.moveUp());
-                if (!canHeroMove(hero.getPos())){ hero.setPos(pos);}
+                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                moveMonsters();
                 break;
             case ArrowLeft:
                 hero.moveHero(hero.moveLeft());
-                if (!canHeroMove(hero.getPos())){ hero.setPos(pos);}
+                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                moveMonsters();
                 break;
             case ArrowRight:
                 hero.moveHero(hero.moveRight());
-                if (!canHeroMove(hero.getPos())){ hero.setPos(pos);}
+                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                moveMonsters();
                 break;
         }
-
-
+        if (verifyMonsterColision(hero)){
+            System.out.println("A monster hit you and you died :(       Game OVER!");
+            check_for_monster_collisions = true;
+        }
     }
 }
