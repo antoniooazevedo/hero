@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class Game {
     Screen screen;
-
     Position pos = new Position(10,10);
     Hero hero = new Hero(pos);
     Arena arena = new Arena (80, 24, hero);

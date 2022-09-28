@@ -6,11 +6,10 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.screen.Screen;
 
-public class Hero {
-    private Position pos;
+public class Hero extends Element {
 
     Hero(Position position) {
-        this.pos = position;
+        super(position);
     }
 
     public void setPos(Position pos) {

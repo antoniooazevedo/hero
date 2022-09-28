@@ -4,12 +4,10 @@ import com.googlecode.lanterna.graphics.TextGraphics;
 
 import java.util.List;
 
-public class Wall {
-    private Position pos = new Position(0,0);
+public class Wall extends Element {
 
-    Wall(int x, int y){
-        pos.setX(x);
-        pos.setY(y);
+    Wall(Position position){
+        super(position);
     }
     public Position getPos(){return pos;}
     public void draw(TextGraphics graphics){
