@@ -3,8 +3,6 @@ import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
 
 public class Hero extends Element {
 
@@ -34,24 +32,6 @@ public class Hero extends Element {
 
     public Position moveRight() {
         return new Position(pos.getX() + 1, pos.getY());
-    }
-
-    public void processKey(KeyStroke key) {
-        switch (key.getKeyType()) {
-            case ArrowUp:
-                moveHero(moveUp());
-                break;
-            case ArrowDown:
-                moveHero(moveDown());
-                break;
-            case ArrowLeft:
-                moveHero(moveLeft());
-                break;
-            case ArrowRight:
-                moveHero(moveRight());
-                break;
-        }
-
     }
 
     public void draw(TextGraphics graphics){

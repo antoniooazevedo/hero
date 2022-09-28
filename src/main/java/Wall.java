@@ -2,8 +2,6 @@ import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 
-import java.util.List;
-
 public class Wall extends Element {
 
     Wall(Position position){

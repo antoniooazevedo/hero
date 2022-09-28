@@ -1,23 +1,20 @@
 import com.googlecode.lanterna.TerminalPosition;
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.screen.Screen;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class Arena {
-    private int width;
-    private int height;
-    private Hero hero;
-    private List<Wall> walls;
-    private List<Coin> coins;
-    private List<Monster> monsters;
+    private final int width;
+    private final int height;
+    private final Hero hero;
+    private final List<Wall> walls;
+    private final List<Coin> coins;
+    private final List<Monster> monsters;
 
     public boolean check_for_monster_collisions = false;
 
@@ -30,24 +27,6 @@ public class Arena {
         this.coins = createCoins();
         this.monsters = createMonsters();
     }
-
-
-    public int getWidth() {
-        return width;
-    }
-
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
 
     public void draw(TextGraphics graphics) {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
@@ -98,7 +77,7 @@ public class Arena {
         Random random = new Random();
         ArrayList<Monster> monsters = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 20; i++) {
             monsters.add(new Monster(new Position(random.nextInt(width - 2) + 1, random.nextInt(height - 2) + 1)));
         }
         return monsters;
@@ -108,14 +87,14 @@ public class Arena {
         for (Monster mon : monsters) {
             Position mon_pos = new Position(mon.getPos().getX(), mon.getPos().getY());
             mon.move();
-            if (!canMove(mon.getPos())) {
+            if (canNotMove(mon.getPos())) {
                 mon.setPos(mon_pos);
             }
 
         }
     }
 
-    private boolean verifyMonsterColision(Hero hero){
+    private boolean verifyMonsterCollision(Hero hero){
         for (Monster mon : monsters){
             if(hero.getPos().equals(mon.getPos())){
                 return true;
@@ -124,13 +103,13 @@ public class Arena {
         return false;
     }
 
-    public boolean canMove(Position position){
+    public boolean canNotMove(Position position){
         for (Wall wall : walls){
             if (wall.getPos().equals(position)){
-                return false;
+                return true;
             }
         }
-        return true;
+        return false;
     }
 
     public void processKey(KeyStroke key) {
@@ -138,26 +117,26 @@ public class Arena {
         switch (key.getKeyType()) {
             case ArrowDown:
                 hero.moveHero(hero.moveDown());
-                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
                 moveMonsters();
                 break;
             case ArrowUp:
                 hero.moveHero(hero.moveUp());
-                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
                 moveMonsters();
                 break;
             case ArrowLeft:
                 hero.moveHero(hero.moveLeft());
-                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
                 moveMonsters();
                 break;
             case ArrowRight:
                 hero.moveHero(hero.moveRight());
-                if (!canMove(hero.getPos())){ hero.setPos(pos_hero);}
+                if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
                 moveMonsters();
                 break;
         }
-        if (verifyMonsterColision(hero)){
+        if (verifyMonsterCollision(hero)){
             System.out.println("A monster hit you and you died :(       Game OVER!");
             check_for_monster_collisions = true;
         }
