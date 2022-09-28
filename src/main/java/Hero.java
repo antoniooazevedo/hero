@@ -16,10 +16,6 @@ public class Hero extends Element {
         this.pos = pos;
     }
 
-    public Position getPos() {
-        return pos;
-    }
-
     public void moveHero(Position position) {
         this.setPos(position);
     }
@@ -60,7 +56,7 @@ public class Hero extends Element {
 
     public void draw(TextGraphics graphics){
         graphics.setCharacter(pos.getX(), pos.getY(), TextCharacter.fromCharacter('X')[0]);
-        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFF33"));
+        graphics.setForegroundColor(TextColor.Factory.fromString("#FFFFFF"));
         graphics.enableModifiers(SGR.BOLD);
         graphics.putString(new TerminalPosition(pos.getX(), pos.getY()), "X");
     }
