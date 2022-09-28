@@ -15,7 +15,7 @@ public class Game {
 
     Position pos = new Position(10,10);
     Hero hero = new Hero(pos);
-    Arena arena = new Arena (100, 100, hero);
+    Arena arena = new Arena (80, 24, hero);
 
     Game(){
         try {
@@ -41,7 +41,7 @@ public class Game {
         while (true) {
             draw();
             KeyStroke key = screen.readInput();
-            processKey(key);
+            arena.processKey(key);
             if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q'){
                 screen.close();
             }
@@ -49,13 +49,5 @@ public class Game {
                 break;
             }
         }
-    }
-
-    public void moveHero(Position position){
-        hero.setPos(position);
-    }
-
-    private void processKey(KeyStroke key){
-        arena.processKey(key);
     }
 }
