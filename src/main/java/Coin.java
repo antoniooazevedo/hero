@@ -18,5 +18,4 @@ public class Coin extends Element {
         graphics.putString(new TerminalPosition(pos.getX(), pos.getY()), "o");
     }
 
-
 }

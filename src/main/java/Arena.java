@@ -17,6 +17,7 @@ public class Arena {
     private Hero hero;
     private List<Wall> walls;
     private List<Coin> coins;
+    private List<Monster> monsters;
 
 
     Arena(int w, int h, Hero hero) {
@@ -25,6 +26,7 @@ public class Arena {
         this.hero = hero;
         this.walls = createWalls();
         this.coins = createCoins();
+        this.monsters = createMonsters();
     }
 
 
@@ -49,8 +51,15 @@ public class Arena {
         graphics.setBackgroundColor(TextColor.Factory.fromString("#336699"));
         graphics.fillRectangle(new TerminalPosition(0, 0), new TerminalSize(width, height), ' ');
         for (Coin coin: coins) {
-            System.out.println(coin.getPos().getX() + "    " + coin.getPos().getY());
             coin.draw(graphics);
+            if (retrieveCoin(coin)){
+                coins.remove(coin);
+                break;
+            }
+
+        }
+        for (Monster monster: monsters){
+            monster.draw(graphics);
         }
         hero.draw(graphics);
         for (Wall wall: walls)
@@ -79,7 +88,19 @@ public class Arena {
         return coins;
     }
 
+    private boolean retrieveCoin(Coin coin){
+        return hero.getPos().equals(coin.getPos());
+    }
 
+    private List<Monster> createMonsters(){
+        Random random = new Random();
+        ArrayList<Monster> monsters = new ArrayList<>();
+
+        for (int i = 0; i < 5; i++){
+            monsters.add(new Monster(new Position(random.nextInt(width - 2) + 1,random.nextInt(height - 2) + 1)));
+        }
+        return monsters;
+    }
 
     public boolean canHeroMove(Position position){
         for (Wall wall : walls){
