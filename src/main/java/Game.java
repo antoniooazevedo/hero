@@ -7,12 +7,12 @@ import com.googlecode.lanterna.terminal.Terminal;
 
 import java.io.IOException;
 
-
 public class Game {
     Screen screen;
     Position pos = new Position(10,10);
     Hero hero = new Hero(pos);
     Arena arena = new Arena (80, 24, hero);
+
 
     Game(){
         try {
@@ -39,7 +39,7 @@ public class Game {
             draw();
             KeyStroke key = screen.readInput();
             arena.processKey(key);
-            if ((key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') || arena.check_for_monster_collisions){
+            if ((key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') || arena.end_game){
                 screen.close();
             }
             if (key.getKeyType() == KeyType.EOF){

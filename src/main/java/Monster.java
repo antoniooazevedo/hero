@@ -4,7 +4,7 @@ import com.googlecode.lanterna.TextCharacter;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 
-import java.util.Random;
+import static java.lang.Math.abs;
 
 public class Monster extends Element {
 
@@ -23,24 +23,23 @@ public class Monster extends Element {
         graphics.putString(new TerminalPosition(pos.getX(), pos.getY()), "M");
     }
 
-    public void move(){
-        Random random = new Random();
-
-        switch (random.nextInt(5)){
-            case 0:
-                pos.setX(pos.getX() + 1);
-                break;
-            case 1:
+    public void move(Position position){
+        if (abs(pos.getX() - position.getX()) >= abs(pos.getY() - position.getY())){
+            if (pos.getX() > position.getX()){
                 pos.setX(pos.getX() - 1);
-                break;
-            case 2:
-                pos.setY(pos.getY() + 1);
-                break;
-            case 3:
+            }
+            else{
+                pos.setX(pos.getX() + 1);
+            }
+        }
+        else {
+            System.out.println(pos.getY() + "     " + position.getY());
+            if (pos.getY() > position.getY()) {
                 pos.setY(pos.getY() - 1);
-                break;
-            case 4:
-                break;
+            }
+            else{
+                pos.setY(pos.getY() + 1);
+            }
         }
     }
 }

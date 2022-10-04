@@ -15,8 +15,8 @@ public class Arena {
     private final List<Wall> walls;
     private final List<Coin> coins;
     private final List<Monster> monsters;
-
-    public boolean check_for_monster_collisions = false;
+    public boolean end_game = false;
+    public boolean debuff_check = true;
 
 
     Arena(int w, int h, Hero hero) {
@@ -45,6 +45,10 @@ public class Arena {
         hero.draw(graphics);
         for (Wall wall : walls)
             wall.draw(graphics);
+
+        if (coins.isEmpty()){
+            System.out.println("YOU WIN!");
+            end_game = true;}
     }
 
     private List<Wall> createWalls() {
@@ -77,7 +81,7 @@ public class Arena {
         Random random = new Random();
         ArrayList<Monster> monsters = new ArrayList<>();
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 5; i++) {
             monsters.add(new Monster(new Position(random.nextInt(width - 2) + 1, random.nextInt(height - 2) + 1)));
         }
         return monsters;
@@ -86,10 +90,11 @@ public class Arena {
     private void moveMonsters() {
         for (Monster mon : monsters) {
             Position mon_pos = new Position(mon.getPos().getX(), mon.getPos().getY());
-            mon.move();
+            mon.move(hero.getPos());
             if (canNotMove(mon.getPos())) {
                 mon.setPos(mon_pos);
             }
+
 
         }
     }
@@ -118,27 +123,28 @@ public class Arena {
             case ArrowDown:
                 hero.moveHero(hero.moveDown());
                 if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
-                moveMonsters();
+                if (debuff_check){moveMonsters();}
                 break;
             case ArrowUp:
                 hero.moveHero(hero.moveUp());
                 if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
-                moveMonsters();
+                if (debuff_check){moveMonsters();}
                 break;
             case ArrowLeft:
                 hero.moveHero(hero.moveLeft());
                 if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
-                moveMonsters();
+                if (debuff_check){moveMonsters();}
                 break;
             case ArrowRight:
                 hero.moveHero(hero.moveRight());
                 if (canNotMove(hero.getPos())){ hero.setPos(pos_hero);}
-                moveMonsters();
+                if (debuff_check){moveMonsters();}
                 break;
         }
         if (verifyMonsterCollision(hero)){
             System.out.println("A monster hit you and you died :(       Game OVER!");
-            check_for_monster_collisions = true;
+            end_game = true;
         }
+        debuff_check = !debuff_check;
     }
 }
