@@ -33,7 +33,6 @@ public class Monster extends Element {
             }
         }
         else {
-            System.out.println(pos.getY() + "     " + position.getY());
             if (pos.getY() > position.getY()) {
                 pos.setY(pos.getY() - 1);
             }
